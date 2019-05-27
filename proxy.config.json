@@ -1,0 +1,20 @@
+{
+	"/ipay": {
+		"target": "https://payments.ipayafrica.com/v3/ke",
+		"secure": false,
+		"pathRewrite": {
+			"^/ipay": ""
+		},
+		"changeOrigin": true,
+		"logLevel": "debug"
+	},
+	"/hash": {
+		"target": "https://ipayafrica.com/hashid/",
+		"secure": true,
+		"pathRewrite": {
+			"^/hash": ""
+		},
+		"changeOrigin": true,
+		"logLevel": "debug"
+	}
+}

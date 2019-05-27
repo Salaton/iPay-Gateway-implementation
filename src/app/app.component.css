@@ -1,0 +1,15 @@
+p {
+  font-family: Lato;
+}
+
+.full-width {
+  width: 60%;
+}
+
+.center {
+  text-align: center;
+}
+
+.capitalize {
+  text-transform: uppercase;
+}
