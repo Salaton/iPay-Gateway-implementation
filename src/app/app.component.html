@@ -1,7 +1,9 @@
 <div class="center">
 	<hello name="{{ name }}"></hello>
 	<p>Click the button below to pay</p>
-	<button type="submit" class="full-width capitalize" mat-raised-button color="primary" (click)="pay()">
-		Pay here
-	</button>
+	<form method="POST" action="https://payments.ipayafrica.com/v3/ke">
+		<button type="submit" class="full-width capitalize" mat-raised-button color="primary" (click)="pay()">
+			Pay here
+		</button>
+	</form>
 </div>

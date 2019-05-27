@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
 import * as CryptoJS from "crypto-js";
+import axios from "axios";
+import { AxiosInstance } from "axios";
 
 interface Ipay {
 	live: string;
@@ -30,17 +32,18 @@ export class PaymentService {
 	//use a CORS proxy to get around “No Access-Control-Allow-Origin header” problems
 	private vendor = "demo";
 	private secretKey = "demoCHANGED";
+	private axiosClient: AxiosInstance;
 
 	constructor(private http: HttpClient) {}
 
 	public hash(dataStr: string) {
 		console.log(`The string to be hashed is ${dataStr}`);
-		var hsh = CryptoJS.HmacSHA1(dataStr, this.secretKey).toString();
-		console.log(hsh);
+		var hash = CryptoJS.HmacSHA1(dataStr, this.secretKey).toString();
+		console.log(`Hash ID:`, hash);
 		return this.http
-			.post(this.paymentUrl, hsh, { responseType: "text" })
+			.post(this.paymentUrl, hash, { responseType: "text" })
 			.pipe(
-				retry(3),
+				retry(3), // retry a failed request up to 3 times
 				catchError(this.handleError)
 			)
 			.toPromise();
@@ -63,7 +66,7 @@ export class PaymentService {
 
 	/* Actual payment */
 	public makePayment(data: Ipay) {
-		const payload = `${data.live}${data.oid}${data.inv}${data.ttl}${data.tel}${data.eml}${data.vid}${data.curr}${data.p1}${data.p2}${data.p3}${data.p4}${data.cbk}${data.cst}${data.crl}`;
+		const payload = `${data.live}${data.oid}${data.inv}${data.ttl}${data.tel}${data.eml}${data.vid}${data.curr}${data.p1}${data.p2}${data.p3}${data.p4}${data.cbk}${data.cst}${data.crl}${this.hash}`;
 		console.log(`The payload is ${payload}`);
 
 		return this.http.post(this.paymentUrl, payload, { responseType: "text" }).pipe(
