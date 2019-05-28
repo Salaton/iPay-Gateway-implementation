@@ -41,17 +41,12 @@ export class AppComponent {
 	}
 
 	/* Make payment */
-	pay(dataStr: string) {
-		return this.payment.hash(this.dataStr).then(r => {
-			if (r) {
-				(this.data.cbk = "https://payments.ipayafrica.com/v3/ke"), (this.data.hsh = r);
-				console.log(this.data);
-				return this.payment.makePayment(this.data).subscribe(res => {
-					if (res) {
-						console.log(res);
-					}
-				});
-			}
-		});
+	pay() {
+		// return this.payment.makePayment(this.data).subscribe(res => {
+		// 	if (res) {
+		// 		this.data.cbk = "http://localhost:4200/";
+		// 		console.log(this.data);
+		// 	}
+		// });
 	}
 }

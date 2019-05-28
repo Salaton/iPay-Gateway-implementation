@@ -3,8 +3,6 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
 import * as CryptoJS from "crypto-js";
-import axios from "axios";
-import { AxiosInstance } from "axios";
 
 interface Ipay {
 	live: string;
@@ -28,26 +26,21 @@ interface Ipay {
 @Injectable()
 export class PaymentService {
 	private paymentUrl = "https://payments.ipayafrica.com/v3/ke";
-	private hashidUrl = "https://ipayafrica.com/hashid";
-	//use a CORS proxy to get around “No Access-Control-Allow-Origin header” problems
-	private vendor = "demo";
 	private secretKey = "demoCHANGED";
-	private axiosClient: AxiosInstance;
-
 	constructor(private http: HttpClient) {}
 
-	public hash(dataStr: string) {
-		console.log(`The string to be hashed is ${dataStr}`);
-		var hash = CryptoJS.HmacSHA1(dataStr, this.secretKey).toString();
-		console.log(`Hash ID:`, hash);
-		return this.http
-			.post(this.paymentUrl, hash, { responseType: "text" })
-			.pipe(
-				retry(3), // retry a failed request up to 3 times
-				catchError(this.handleError)
-			)
-			.toPromise();
-	}
+	// public hash(dataStr: string) {
+	// 	console.log(`The string to be hashed is ${dataStr}`);
+	// 	var hashid = CryptoJS.HmacSHA1(dataStr, this.secretKey).toString();
+	// 	console.log(`Hash ID:`, hashid);
+	// 	return this.http
+	// 		.post(this.paymentUrl, hashid, { responseType: "text" })
+	// 		.pipe(
+	// 			retry(3), // retry a failed request up to 3 times
+	// 			catchError(this.handleError)
+	// 		)
+	// 		.toPromise();
+	// }
 	/* Retrieve hash */
 	// public getHash(dataStr: string) {
 	// 	const proxHashUrl = `${this.proxyUrl}${this.hashidUrl}`;
@@ -66,10 +59,18 @@ export class PaymentService {
 
 	/* Actual payment */
 	public makePayment(data: Ipay) {
-		const payload = `${data.live}${data.oid}${data.inv}${data.ttl}${data.tel}${data.eml}${data.vid}${data.curr}${data.p1}${data.p2}${data.p3}${data.p4}${data.cbk}${data.cst}${data.crl}${this.hash}`;
+		const parameters = `live=${data.live}&oid=${data.oid}&inv=${data.inv}&ttl=${data.ttl}&tel=${data.tel}&eml=${data.eml}&vid=${data.vid}&curr=${data.curr}&p1=${data.p1}&p2=${data.p2}&p3=${data.p3}&p4=${data.p4}&cbk=${data.cbk}&cst=${data.cst}&crl=${data.crl}&hsh=${data.hsh}`;
+
+		const payload = `${data.live}${data.oid}${data.inv}${data.ttl}${data.tel}${data.eml}${data.vid}${data.curr}${data.p1}${data.p2}${data.p3}${data.p4}${data.cbk}${data.cst}${data.crl}${data.hsh}`;
 		console.log(`The payload is ${payload}`);
 
-		return this.http.post(this.paymentUrl, payload, { responseType: "text" }).pipe(
+		var hashid = CryptoJS.HmacSHA1(payload, this.secretKey).toString();
+		console.log(`Hash ID:`, hashid);
+
+		const params = `${parameters}${hashid}`;
+		console.log(`The values passed to the URL`, params);
+
+		return this.http.post(this.paymentUrl, params).pipe(
 			retry(3),
 			catchError(this.handleError)
 		);
