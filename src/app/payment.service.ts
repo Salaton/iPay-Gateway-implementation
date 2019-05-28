@@ -47,7 +47,7 @@ export class PaymentService {
 	// 	console.log(proxHashUrl);
 	// 	const payload = `vendor=${this.vendor}&data=${dataStr}&key=${this.secretKey}`;
 
-	// 	console.log(`Hash payload is "${payload}"`);
+	// 	console.log(`Hash payload is "${payload`);
 	// 	return this.http
 	// 		.post(proxHashUrl, payload, { responseType: "text" })
 	// 		.pipe(
@@ -59,15 +59,52 @@ export class PaymentService {
 
 	/* Actual payment */
 	public makePayment(data: Ipay) {
-		const parameters = `live=${data.live}&oid=${data.oid}&inv=${data.inv}&ttl=${data.ttl}&tel=${data.tel}&eml=${data.eml}&vid=${data.vid}&curr=${data.curr}&p1=${data.p1}&p2=${data.p2}&p3=${data.p3}&p4=${data.p4}&cbk=${data.cbk}&cst=${data.cst}&crl=${data.crl}&hsh=${data.hsh}`;
+		//const parameters = `live=${data.live}&oid=${data.oid}&inv=${data.inv}&ttl=${data.ttl}&tel=${data.tel}&eml=${data.eml}&vid=${data.vid}&curr=${data.curr}&p1=${data.p1}&p2=${data.p2}&p3=${data.p3}&p4=${data.p4}&cbk=${data.cbk}&cst=${data.cst}&crl=${data.crl}&hsh=${data.hsh}`;
 
+		// const parameters = {
+		// 	live: data.live,
+		// 	oid: data.oid,
+		// 	inv: data.inv,
+		// 	ttl: data.ttl,
+		// 	tel: data.tel,
+		// 	eml: data.eml,
+		// 	vid: data.vid,
+		// 	curr: data.curr,
+		// 	p1: data.p1,
+		// 	p2: data.p2,
+		// 	p3: data.p3,
+		// 	p4: data.p4,
+		// 	cbk: data.cbk,
+		// 	cst: data.cst,
+		// 	crl: data.crl,
+		// 	hsh: data.hsh
+		// };
 		const payload = `${data.live}${data.oid}${data.inv}${data.ttl}${data.tel}${data.eml}${data.vid}${data.curr}${data.p1}${data.p2}${data.p3}${data.p4}${data.cbk}${data.cst}${data.crl}${data.hsh}`;
 		console.log(`The payload is ${payload}`);
 
 		var hashid = CryptoJS.HmacSHA1(payload, this.secretKey).toString();
 		console.log(`Hash ID:`, hashid);
 
-		const params = `${parameters}${hashid}`;
+		const params = {
+			live: data.live,
+			oid: data.oid,
+			inv: data.inv,
+			ttl: data.ttl,
+			tel: data.tel,
+			eml: data.eml,
+			vid: data.vid,
+			curr: data.curr,
+			p1: data.p1,
+			p2: data.p2,
+			p3: data.p3,
+			p4: data.p4,
+			cbk: data.cbk,
+			cst: data.cst,
+			crl: data.crl,
+			hsh: hashid
+		};
+
+		//const params = `${parameters}${hashid}`;
 		console.log(`The values passed to the URL`, params);
 
 		return this.http.post(this.paymentUrl, params).pipe(
