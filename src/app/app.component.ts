@@ -9,7 +9,7 @@ import { PaymentService } from "./payment.service";
 export class AppComponent {
 	public name = "Ipay demo";
 
-	private data = {
+	public data = {
 		live: "0",
 		oid: "112",
 		inv: "112020102292999",
@@ -42,11 +42,6 @@ export class AppComponent {
 
 	/* Make payment */
 	pay() {
-		// return this.payment.makePayment(this.data).subscribe(res => {
-		// 	if (res) {
-		// 		this.data.cbk = "http://localhost:4200/";
-		// 		console.log(this.data);
-		// 	}
-		// });
+		return this.payment.makePayment(this.data);
 	}
 }
