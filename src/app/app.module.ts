@@ -7,9 +7,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
 import { HelloComponent } from "./hello.component";
 import { PaymentService } from "./payment.service";
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-	imports: [HttpClientModule, BrowserModule, FormsModule, MaterialmoduleModule],
+	imports: [HttpClientModule, BrowserModule, FormsModule, MaterialmoduleModule, AppRoutingModule],
 	declarations: [AppComponent, HelloComponent],
 	bootstrap: [AppComponent],
 	providers: [PaymentService]

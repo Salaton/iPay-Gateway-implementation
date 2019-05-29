@@ -1,8 +1,6 @@
 <div class="center">
 	<hello name="{{ name }}"></hello>
 	<p>Click the button below to pay</p>
-	<p>{{ data.live }}{{ data.oid }}{{ data.hshid }}</p>
-
 	<form method="POST" action="https://payments.ipayafrica.com/v3/ke">
 		<input type="hidden" name="live" value="{{ data.live }}" />
 		<input type="hidden" name="oid" value="{{ data.oid }}" />
@@ -19,7 +17,8 @@
 		<input type="hidden" name="cbk" value="{{ data.cbk }}" />
 		<input type="hidden" name="cst" value="{{ data.cst }}" />
 		<input type="hidden" name="crl" value="{{ data.crl }}" />
-		<input type="hidden" id="hshkey" name="hsh" value="{{ hshid }}" />
+		<input type="hidden" id="hshkey" name="hsh" value="{{ data.hsh }}" />
+		<!-- <input type="submit" class="full-width capitalize" mat-raised-button color="primary" /> -->
 
 		<button type="submit" class="full-width capitalize" mat-raised-button color="primary" (click)="pay()">
 			Pay here

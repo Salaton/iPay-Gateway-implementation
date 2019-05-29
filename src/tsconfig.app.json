@@ -2,8 +2,7 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "../out-tsc/app",
-		"types": [],
-		"lib": ["es2016"]
+		"types": []
 	},
 	"exclude": ["test.ts", "**/*.spec.ts"]
 }
