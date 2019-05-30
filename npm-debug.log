@@ -42,4 +42,5 @@
 23 error Or if that isn't available, you can get their info via:
 23 error     npm owner ls angular
 23 error There is likely additional logging output above.
+
 24 verbose exit [ 1, true ]
