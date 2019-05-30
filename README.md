@@ -1,4 +1,4 @@
-# iPay payment gateway web-based integration
+# iPay integration
 
 This is a simple Angular JS implementation that allows a user to successfully integrate with the iPay gateway.
 
